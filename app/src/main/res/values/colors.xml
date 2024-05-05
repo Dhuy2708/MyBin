@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_color">#52f7ad</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="cyan">#29c2a4</color>
+    <color name="dark_cyan">#25957E</color>
+    <color name="orange">#fa9b5c</color>
+    <color name="dark_orange">#B87243</color>
+    <color name="pink">#fc5388</color>
+    <color name="dark_pink">#AC3C5F</color>
+    <color name="blue">#53acf5</color>
+    <color name="dark_blue">#3872A3</color>
+    <color name="underline">#D8D6D6</color>
+    <color name="cardview_1">#FAE6DD</color>
+    <color name="cardview_2">#E1F2FC</color>
+    <color name="dark_white">#F5F5F5</color>
+</resources>
