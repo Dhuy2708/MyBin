@@ -20,10 +20,10 @@ public class BinHistory implements Serializable {
     }
 
     public String getDayMonthYear(){
-        return date.getDayOfMonth() + "/" + date.getMonth() +  "/" + date.getYear();
+        return date.getDayOfMonth() + "/" + date.getMonthValue() +  "/" + date.getYear();
     }
     public String getMonthYear(){
-        return date.getMonth() +  "/" + date.getYear();
+        return date.getMonthValue() +  "/" + date.getYear();
     }
     public String getYear(){
         return date.getYear() + "";
