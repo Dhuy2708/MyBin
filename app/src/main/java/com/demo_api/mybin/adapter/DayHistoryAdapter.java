@@ -1,5 +1,6 @@
 package com.demo_api.mybin.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,10 @@ public class DayHistoryAdapter extends RecyclerView.Adapter<DayHistoryAdapter.Vi
             binding.historyCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Navigation.findNavController(v).navigate(R.id.detailHistoryList);
+                    BinHistory binToTransfer = list.get(getAdapterPosition());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("binHistory", binToTransfer);
+                    Navigation.findNavController(v).navigate(R.id.detailHistoryFragment, bundle);
                 }
             });
 

@@ -6,8 +6,15 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface HistoryApi {
-    @GET("getHistory_byDate?day=24&month=4&year=2024")
-    Single<List<BinDetailHistory>> getDetailHistory();
+    @GET("getHistory_byDate")
+    Single<List<BinDetailHistory>> getDetailHistory(
+            @Query("day") int day,
+            @Query("month") int month,
+            @Query("year") int year
+    );
+
+
 }

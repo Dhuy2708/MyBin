@@ -29,7 +29,7 @@ public class HistoryService {
                 .create(HistoryApi.class);
     }
 
-    public Single<List<BinDetailHistory>> getHistories(){
-        return api.getDetailHistory();
+    public Single<List<BinDetailHistory>> getHistories(int day, int month, int year){
+        return api.getDetailHistory(day, month, year);
     }
 }

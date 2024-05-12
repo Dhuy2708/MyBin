@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,11 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.adapter.DetailHistoryAdapter;
 import com.demo_api.mybin.api.service.HistoryService;
 import com.demo_api.mybin.model.BinDetailHistory;
+import com.demo_api.mybin.model.BinHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +32,23 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DetailHistoryFragment#newInstance} factory method to
+ * Use the {@link DetailHistoryFragment } factory method to
  * create an instance of this fragment.
  */
 public class DetailHistoryFragment extends Fragment {
     private HistoryService apiService;
     private RecyclerView recyclerView;
     private ArrayList<BinDetailHistory> history_list;
+    private BinHistory binReceived;
     private DetailHistoryAdapter historyAdapter;
+    private ImageButton backToHistoryBtn;
+    private TextView dateTV;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            binReceived = (BinHistory)getArguments().getSerializable("binHistory");
         }
     }
 
@@ -56,6 +63,16 @@ public class DetailHistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        dateTV = view.findViewById(R.id.dateTextView);
+        dateTV.setText(binReceived.getDayMonthYear());
+
+        view.findViewById(R.id.backToHistoryBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Quay lại trang danh sách (list) khi nút back được nhấn
+                NavHostFragment.findNavController(DetailHistoryFragment.this).navigateUp();
+            }
+        });
 
         history_list = new ArrayList<BinDetailHistory>();
         historyAdapter = new DetailHistoryAdapter(history_list);
@@ -65,7 +82,7 @@ public class DetailHistoryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         apiService = new HistoryService();
-        apiService.getHistories()
+        apiService.getHistories(binReceived.getDate().getDayOfMonth(), binReceived.getDate().getMonthValue(), binReceived.getDate().getYear())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<List<BinDetailHistory>>() {
