@@ -18,7 +18,7 @@
             app:destination="@id/historyFragment" />
         <action
             android:id="@+id/action_homeFragment_to_settingFragment2"
-            app:destination="@id/settingFragment2"
+            app:destination="@id/settingFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -55,7 +55,7 @@
             app:destination="@id/historyFragment" />
     </fragment>
     <fragment
-        android:id="@+id/settingFragment2"
+        android:id="@+id/settingFragment"
         android:name="com.demo_api.mybin.view.setting.SettingFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
