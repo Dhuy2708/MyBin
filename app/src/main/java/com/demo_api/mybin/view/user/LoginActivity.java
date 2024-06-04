@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Username hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
         }
     }
 }

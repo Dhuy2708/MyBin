@@ -28,6 +28,8 @@ public class ProfileFragment extends Fragment {
     private Button btnLogout;
     private Button btnUpdateProfile;
     private ImageView profileImage;
+    private ImageView phoneIcon;
+    private ImageView locationIcon;
     private TextView profileUsername;
     private TextView profileEmail;
     private TextView profilePhone;
@@ -74,6 +76,8 @@ public class ProfileFragment extends Fragment {
         profileEmail = view.findViewById(R.id.profile_email);
         profilePhone = view.findViewById(R.id.profile_phone);
         profileAddress = view.findViewById(R.id.profile_address);
+        locationIcon = view.findViewById(R.id.location_icon);
+        phoneIcon = view.findViewById(R.id.phone_icon);
         promptLogin = view.findViewById(R.id.prompt_login);
         btnLogin = view.findViewById(R.id.btn_login);
         btnLogout = view.findViewById(R.id.btn_logout);
@@ -89,6 +93,10 @@ public class ProfileFragment extends Fragment {
         if (isLoggedIn()) {
             loadUserProfile();
         } else {
+            SharedPreferences prefs = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.apply();
             showLoginPrompt();
         }
         btnLogout.setOnClickListener(v -> logoutUser());
@@ -121,6 +129,8 @@ public class ProfileFragment extends Fragment {
         btnLogin.setVisibility(View.VISIBLE);
         btnLogout.setVisibility(View.GONE);
         btnUpdateProfile.setVisibility(View.GONE);
+        phoneIcon.setVisibility(View.GONE);
+        locationIcon.setVisibility(View.GONE);
     }
     private void loadUserProfile() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);

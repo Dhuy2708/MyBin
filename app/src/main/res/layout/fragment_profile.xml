@@ -6,14 +6,14 @@
     tools:context=".view.profile.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
@@ -73,6 +73,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:id="@+id/phone_icon"
                         android:src="@drawable/baseline_contact_phone_24"
                         android:contentDescription="@string/phone_icon"
                         android:layout_marginEnd="16dp" />
@@ -81,7 +82,7 @@
                         android:id="@+id/profile_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0931964259"
+                        android:text="0912345678"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -95,6 +96,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:id="@+id/location_icon"
                         android:src="@drawable/location_icon_1"
                         android:contentDescription="@string/address_icon"
                         android:layout_marginEnd="16dp" />
@@ -103,27 +105,32 @@
                         android:id="@+id/profile_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12 Cao Xuân Huy"
+                        android:text="111 Nguyễn Lương Bằng"
                         android:textSize="16sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical">
+
                     <Button
                         android:id="@+id/btn_update_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Update Profile"
-                        android:layout_marginTop="16dp"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:text="Chỉnh sửa thông tin" />
+
                     <Button
                         android:id="@+id/btn_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Logout"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Đăng xuất" />
                 </LinearLayout>
             </LinearLayout>
 
