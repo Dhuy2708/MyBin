@@ -1,9 +1,14 @@
 package com.demo_api.mybin.view.home;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -29,6 +34,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+    private static final String CHANNEL_ID = "BinFullNotificationChannel";
     private static Bin static_bin;
     private WaveProgressBar metalWave;
     private WaveProgressBar plasticWave;
@@ -38,6 +44,11 @@ public class HomeFragment extends Fragment {
     private Disposable disposable;
 
     private BinApiService binApiService;
+
+    private boolean isMetalNotified = false;
+    private boolean isPlasticNotified = false;
+    private boolean isPaperNotified = false;
+    private boolean isOtherNotified = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +80,9 @@ public class HomeFragment extends Fragment {
         binApiService = new BinApiService();
 
         // Gọi API và cập nhật giao diện
+        createNotificationChannel();
 
+        // Gọi API và cập nhật giao diện
         disposable = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
                 .flatMapSingle(tick -> binApiService.getBins())
                 .subscribeOn(Schedulers.io())
@@ -83,6 +96,8 @@ public class HomeFragment extends Fragment {
                             Log.d("SUCCESSS", "Paper: " + bin.getPaper());
                             Log.d("SUCCESSS", "Other: " + bin.getOther());
                             updateUI(static_bin); // Cập nhật giao diện
+
+                            checkBinsAndNotify(bin);
                         },
                         throwable -> {
                             // Xử lý khi gặp lỗi trong quá trình gọi API
@@ -119,6 +134,62 @@ public class HomeFragment extends Fragment {
 //        };
 
         //timer.schedule(timerTask, 0, 10);
+    }
+    private void checkBinsAndNotify(Bin bin) {
+        if (bin.getMetal() >= 100 && !isMetalNotified) {
+            sendNotification("Thùng kim loại đã đầy, hãy đi đổ");
+            isMetalNotified = true;
+        } else if (bin.getMetal() < 100) {
+            isMetalNotified = false;
+        }
+
+        if (bin.getPlastic() >= 100 && !isPlasticNotified) {
+            sendNotification("Thùng nhựa đã đầy, hãy đi đổ");
+            isPlasticNotified = true;
+        } else if (bin.getPlastic() < 100) {
+            isPlasticNotified = false;
+        }
+
+        if (bin.getPaper() >= 100 && !isPaperNotified) {
+            sendNotification("Thùng giấy đã đầy, hãy đi đổ");
+            isPaperNotified = true;
+        } else if (bin.getPaper() < 100) {
+            isPaperNotified = false;
+        }
+
+        if (bin.getOther() >= 100 && !isOtherNotified) {
+            sendNotification("Thùng các loại rác khác đã đầy, hãy đi đổ");
+            isOtherNotified = true;
+        } else if (bin.getOther() < 100) {
+            isOtherNotified = false;
+        }
+    }
+
+    private void sendNotification(String message) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification) // Thay R.drawable.ic_notification bằng tài nguyên icon của bạn
+                .setContentTitle("Bin Full Alert")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Bin Full Notification Channel",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            NotificationManager manager = requireContext().getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(serviceChannel);
+            }
+        }
     }
 
     @Override
