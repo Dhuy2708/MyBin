@@ -35,10 +35,19 @@ public class User {
         this.password = password;
     }
 
-    public User(int id, String avatar, String name, String email, String phoneNumber, String address) {
+//    public User(int id, String avatar, String name, String email, String phoneNumber, String address) {
+//        this.id = id;
+//        this.avatar = avatar;
+//        this.name = name;
+//        this.email = email;
+//        this.phoneNumber = phoneNumber;
+//        this.address = address;
+//    }
+
+    public User(int id, String userName, String password, String email, String phoneNumber, String address){
         this.id = id;
-        this.avatar = avatar;
-        this.name = name;
+        this.userName = userName;
+        this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
@@ -106,5 +115,19 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -57,6 +58,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             if (password.equals(confirmPassword)) {
                 User user = new User(0, username, password, email, phone, address);
+                Log.d("DEBUG1", user.toString());
                 databaseHelper.addUser(user);
 
                 SharedPreferences prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);

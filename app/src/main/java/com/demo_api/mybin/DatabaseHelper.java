@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.demo_api.mybin.model.User;
 
@@ -49,11 +50,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void addUser(User user) {
+        Log.d("DEBUG1", user.toString());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_USERNAME, user.getUserName());
         values.put(COLUMN_PASSWORD, user.getPassword());
-        values.put(COLUMN_AVATAR, user.getAvatar());
+//        values.put(COLUMN_AVATAR, user.getAvatar());
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_EMAIL, user.getEmail());
         values.put(COLUMN_PHONENUMBER, user.getPhoneNumber());

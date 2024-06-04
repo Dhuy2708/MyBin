@@ -139,7 +139,7 @@
                 android:id="@+id/prompt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Please log in to view your profile"
+                android:text="Hãy đăng nhập để xem trang cá nhân"
                 android:textSize="18sp"
                 android:visibility="gone"
                 android:layout_marginTop="32dp"
@@ -149,7 +149,7 @@
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="Đăng nhập"
                 android:visibility="gone"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp" />
