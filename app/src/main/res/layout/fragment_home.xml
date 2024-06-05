@@ -6,6 +6,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.home.HomeFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/login_screen"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone">
+        <!-- Login Prompt -->
+        <TextView
+            android:id="@+id/prompt_login1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Hãy đăng nhập để xem thống kê rác"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:layout_above="@+id/btn_login1"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/btn_login1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Đăng nhập"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp" />
+    </RelativeLayout>
+
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:id="@+id/scrollView2"
@@ -18,7 +49,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/main_page">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -41,7 +73,7 @@
                     tools:srcCompat="@drawable/user_1" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/name_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Anh Tí 100kg"

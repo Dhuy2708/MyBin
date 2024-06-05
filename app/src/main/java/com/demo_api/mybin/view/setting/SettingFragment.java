@@ -6,19 +6,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.view.MainActivity;
-import com.demo_api.mybin.view.profile.ProfileFragment;
-import com.demo_api.mybin.view.user.LoginActivity;
 
 public class SettingFragment extends Fragment {
     private TextView logout;

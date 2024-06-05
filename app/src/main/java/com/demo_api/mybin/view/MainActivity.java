@@ -15,7 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.app.database.DatabaseHelper;
+import com.demo_api.mybin.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 

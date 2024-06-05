@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.model.User;
-import com.example.app.database.DatabaseHelper;
+import com.demo_api.mybin.DatabaseHelper;
 
 
 public class EditProfileActivity extends AppCompatActivity {

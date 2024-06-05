@@ -16,12 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.model.User;
+import com.demo_api.mybin.view.MainActivity;
+import com.demo_api.mybin.view.home.HomeFragment;
 import com.demo_api.mybin.view.user.EditProfileActivity;
 import com.demo_api.mybin.view.user.LoginActivity;
-import com.example.app.database.DatabaseHelper;
+import com.demo_api.mybin.DatabaseHelper;
+
 public class ProfileFragment extends Fragment {
     private TextView promptLogin;
     private Button btnLogin;
@@ -34,6 +40,8 @@ public class ProfileFragment extends Fragment {
     private TextView profileEmail;
     private TextView profilePhone;
     private TextView profileAddress;
+    private RelativeLayout loginPage;
+    private ScrollView profilePage;
     private DatabaseHelper databaseHelper;
     private static final String PREFS_NAME = "user_prefs";
     private static final String PREF_USER_ID = "user_id";
@@ -82,6 +90,8 @@ public class ProfileFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btn_login);
         btnLogout = view.findViewById(R.id.btn_logout);
         btnUpdateProfile = view.findViewById(R.id.btn_update_profile);
+        loginPage = view.findViewById(R.id.login_screen1);
+        profilePage = view.findViewById(R.id.profile_page);
         databaseHelper = new DatabaseHelper(getContext());
 
 //        SharedPreferences prefs = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
@@ -120,18 +130,21 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showLoginPrompt() {
-        profileImage.setVisibility(View.GONE);
-        profileUsername.setVisibility(View.GONE);
-        profileEmail.setVisibility(View.GONE);
-        profilePhone.setVisibility(View.GONE);
-        profileAddress.setVisibility(View.GONE);
+//        profileImage.setVisibility(View.GONE);
+//        profileUsername.setVisibility(View.GONE);
+//        profileEmail.setVisibility(View.GONE);
+//        profilePhone.setVisibility(View.GONE);
+//        profileAddress.setVisibility(View.GONE);
         promptLogin.setVisibility(View.VISIBLE);
         btnLogin.setVisibility(View.VISIBLE);
-        btnLogout.setVisibility(View.GONE);
-        btnUpdateProfile.setVisibility(View.GONE);
-        phoneIcon.setVisibility(View.GONE);
-        locationIcon.setVisibility(View.GONE);
+//        btnLogout.setVisibility(View.GONE);
+//        btnUpdateProfile.setVisibility(View.GONE);
+//        phoneIcon.setVisibility(View.GONE);
+//        locationIcon.setVisibility(View.GONE);
+        profilePage.setVisibility(View.GONE);
+        loginPage.setVisibility(View.VISIBLE);
     }
+
     private void loadUserProfile() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         int userId = prefs.getInt(PREF_USER_ID, -1);
@@ -150,13 +163,15 @@ public class ProfileFragment extends Fragment {
 //                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 //                profileImage.setImageBitmap(decodedByte);
 
-                profileImage.setVisibility(View.VISIBLE);
-                profileUsername.setVisibility(View.VISIBLE);
-                profileEmail.setVisibility(View.VISIBLE);
-                profilePhone.setVisibility(View.VISIBLE);
-                profileAddress.setVisibility(View.VISIBLE);
+//                profileImage.setVisibility(View.VISIBLE);
+//                profileUsername.setVisibility(View.VISIBLE);
+//                profileEmail.setVisibility(View.VISIBLE);
+//                profilePhone.setVisibility(View.VISIBLE);
+//                profileAddress.setVisibility(View.VISIBLE);
                 promptLogin.setVisibility(View.GONE);
                 btnLogin.setVisibility(View.GONE);
+                profilePage.setVisibility(View.VISIBLE);
+                loginPage.setVisibility(View.GONE);
             }
         }
 //        // Replace with actual user ID or logic to get the current user's ID
@@ -175,6 +190,7 @@ public class ProfileFragment extends Fragment {
 //            Log.d("DEBUG1", "Không tìm thấy người dùng!");
 //        }
     }
+
     private void logoutUser() {
         // Clear SharedPreferences
         SharedPreferences prefs = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
@@ -183,7 +199,7 @@ public class ProfileFragment extends Fragment {
         editor.apply();
 
         // Redirect to login screen
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         getActivity().finish();
     }
