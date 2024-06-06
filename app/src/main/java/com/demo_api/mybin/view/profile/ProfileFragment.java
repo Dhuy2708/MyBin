@@ -3,12 +3,18 @@ package com.demo_api.mybin.view.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.model.User;
@@ -29,6 +36,8 @@ import com.demo_api.mybin.view.user.LoginActivity;
 import com.demo_api.mybin.DatabaseHelper;
 
 public class ProfileFragment extends Fragment {
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int STORAGE_PERMISSION_CODE = 2;
     private TextView promptLogin;
     private Button btnLogin;
     private Button btnLogout;
@@ -115,10 +124,26 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
         btnUpdateProfile.setOnClickListener(v -> editUserProfile());
-
+        profileImage.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                openFileChooser();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+            }
+        });
         return view;
     }
 
+    private void requestStoragePermission() {
+
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
     private void editUserProfile() {
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
         startActivity(intent);
@@ -157,7 +182,7 @@ public class ProfileFragment extends Fragment {
                 profilePhone.setText(user.getPhoneNumber());
                 profileAddress.setText(user.getAddress());
                 // Set profile image resource if available
-                profileImage.setImageResource(R.drawable.user_1);
+                profileImage.setImageResource(R.drawable.default_avatar);
 //                Bitmap bm = BitmapFactory.decodeFile(user.getAvatar());
 //                byte[] decodedString = Base64.decode(user.getAvatar(), Base64.DEFAULT);
 //                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -202,5 +227,27 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openFileChooser();
+            } else {
+                Toast.makeText(getActivity(), "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == -1 && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            profileImage.setImageURI(imageUri);
+        }
     }
 }

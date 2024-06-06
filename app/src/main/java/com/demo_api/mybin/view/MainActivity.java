@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.demo_api.mybin.R;
@@ -37,8 +38,28 @@ public class MainActivity extends AppCompatActivity {
 //                ,"Huỳnh Minh Cường", "cuong21022003@gmail.com", "0931964259", "12 Cao Xuân Huy");
 //        databaseHelper.addUser(user);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        NavController navController = Navigation.findNavController(this, R.id.hostFragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.hostFragment);
+        NavController navController = navHostFragment.getNavController();
+//        NavController navController = Navigation.findNavController(this, R.id.hostFragment);
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.homeFragment) {
+                navController.navigate(R.id.homeFragment);
+                return true;
+            } else if (id == R.id.historyFragment) {
+                navController.navigate(R.id.historyFragment);
+                return true;
+            } else if (id == R.id.profileFragment) {
+                navController.navigate(R.id.profileFragment);
+                return true;
+            } else if (id == R.id.settingFragment) {
+                navController.navigate(R.id.settingFragment);
+                return true;
+            }
+            return false;
+        });
     }
 }
