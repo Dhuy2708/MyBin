@@ -13,8 +13,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Query;
 
 public class HistoryService {
     private static final String BASE_URL="https://longvnhue.pythonanywhere.com/";
@@ -32,4 +34,6 @@ public class HistoryService {
     public Single<List<BinDetailHistory>> getHistories(int day, int month, int year){
         return api.getDetailHistory(day, month, year);
     }
+
+
 }

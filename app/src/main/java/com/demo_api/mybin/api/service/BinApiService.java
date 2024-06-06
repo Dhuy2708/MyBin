@@ -11,11 +11,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public class BinApiService {
-    private static final String BASE_URL="https://dhuy27.pythonanywhere.com/";
+    private static final String BASE_URL="https://longvnhue.pythonanywhere.com/";
     private BinApi api;
 
     public BinApiService(){
@@ -25,6 +28,10 @@ public class BinApiService {
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
                 .create(BinApi.class);
+    }
+
+    public Call<Bin> getNumByDate(int day, int month, int year){
+        return api.getNumByDate(day, month, year);
     }
 
     public Observable<Bin> getBinsPeriodically() {
