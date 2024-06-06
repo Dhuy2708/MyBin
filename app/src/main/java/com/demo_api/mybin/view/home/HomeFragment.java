@@ -56,6 +56,7 @@ import retrofit2.Response;
  */
 public class HomeFragment extends Fragment {
     private static final String CHANNEL_ID = "BinFullNotificationChannel";
+    private static int static_numtime = 0;
     private static Bin static_bin;
     private WaveProgressBar metalWave;
     private WaveProgressBar plasticWave;
@@ -164,6 +165,7 @@ public class HomeFragment extends Fragment {
 
         // Gọi API với ngày hiện tại
 
+        updateUI_NumTime(static_numtime);
         updateUI_fl(static_bin);
         // Khởi tạo đối tượng BinApiService
         binApiService = new BinApiService();
@@ -204,12 +206,13 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful()) {
                     Bin bin = response.body();
 
+                    static_numtime = bin.getNumtime();
                     // Xử lý khi nhận được dữ liệu từ API thành công
 
                     Log.d("SUCCESSS", "NumTime: " + bin.getNumtime());
 
                     // Thực hiện cập nhật giao diện hoặc xử lý khác với dữ liệu từ API
-                    updateUI_NumTime(bin.getNumtime());
+                    updateUI_NumTime(static_numtime);
                 } else {
                     Log.d("DEBUG", "Numtime call not successful");
                 }
