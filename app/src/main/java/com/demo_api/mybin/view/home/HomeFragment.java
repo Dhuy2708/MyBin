@@ -41,6 +41,9 @@ import com.demo_api.mybin.view.history.HistoryFragment;
 import com.demo_api.mybin.view.user.LoginActivity;
 import com.demo_api.mybin.view.user.RegistrationActivity;
 
+import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cjh.WaveProgressBarlibrary.WaveProgressBar;
@@ -48,6 +51,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +67,7 @@ public class HomeFragment extends Fragment {
     private WaveProgressBar plasticWave;
     private WaveProgressBar paperWave;
     private WaveProgressBar otherWave;
+    private TextView numtime;
     private TextView nameHome;
     private TextView promptLogin1;
     private Button btnLogin1;
@@ -71,6 +78,7 @@ public class HomeFragment extends Fragment {
     private DatabaseHelper databaseHelper;
     private Disposable disposable;
     private BinApiService binApiService;
+    private ExecutorService executorService;
     private static final String PREFS_NAME = "user_prefs";
     private static final String PREF_USER_ID = "user_id";
 
@@ -92,6 +100,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        numtime = view.findViewById(R.id.numtime);
         nameHome = view.findViewById(R.id.name_home);
         promptLogin1 = view.findViewById(R.id.prompt_login1);
         btnLogin1 = view.findViewById(R.id.btn_login1);
@@ -159,8 +168,15 @@ public class HomeFragment extends Fragment {
         paperWave = view.findViewById(R.id.paper_wave);
         otherWave = view.findViewById(R.id.other_wave);
 
-        updateUI(static_bin);
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        int year = calendar.get(Calendar.YEAR);
 
+        // Gọi API với ngày hiện tại
+        updateUI_fl(static_bin);
+
+        //Handle navigation khi ấn nút lịch sử rác
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.homeFragment, false)
                 .build();
@@ -168,11 +184,13 @@ public class HomeFragment extends Fragment {
         trashHistory.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.historyFragment, null, navOptions);
         });
+
         // Khởi tạo đối tượng BinApiService
         binApiService = new BinApiService();
 
         // Gọi API và cập nhật giao diện
         createNotificationChannel();
+
 
         // Gọi API và cập nhật giao diện
         disposable = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
@@ -187,8 +205,8 @@ public class HomeFragment extends Fragment {
                             Log.d("SUCCESSS", "Plastic: " + bin.getPlastic());
                             Log.d("SUCCESSS", "Paper: " + bin.getPaper());
                             Log.d("SUCCESSS", "Other: " + bin.getOther());
-                            updateUI(static_bin); // Cập nhật giao diện
-
+                            updateUI_fl(static_bin); // Cập nhật giao diện
+                            getNumByDate(day, month, year);
                             checkBinsAndNotify(bin);
                         },
                         throwable -> {
@@ -196,36 +214,33 @@ public class HomeFragment extends Fragment {
                             Log.d("DEBUG", "FAIL" + throwable.getMessage());
                         }
                 );
-//        disposable = binApiService.getBinsPeriodically()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                        bins -> {
-//                            // Xử lý khi nhận được danh sách bins từ API
-//                            updateUI(bins);
-//                        },
-//                        throwable -> {
-//                            Log.d("ERROR", "error");
-//                        }
-//                );
 
-//        Timer timer = new Timer();
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        metalWave.setProgress(62);
-//                        plasticWave.setProgress(15);
-//                        paperWave.setProgress(32);
-//                        otherWave.setProgress(80);
-//                    }
-//                });
-//            }
-//        };
+    }
 
-        //timer.schedule(timerTask, 0, 10);
+    private void getNumByDate(int day, int month, int year) {
+        binApiService.getNumByDate(day, month, year).enqueue(new Callback<Bin>() {
+            @Override
+            public void onResponse(Call<Bin> call, Response<Bin> response) {
+                if (response.isSuccessful()) {
+                    Bin bin = response.body();
+
+                    // Xử lý khi nhận được dữ liệu từ API thành công
+
+                    Log.d("SUCCESSS", "NumTime: " + bin.getNumtime());
+
+                    // Thực hiện cập nhật giao diện hoặc xử lý khác với dữ liệu từ API
+                    updateUI_NumTime(bin.getNumtime());
+                } else {
+                    Log.d("DEBUG", "Numtime call not successful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Bin> call, Throwable t) {
+                // Xử lý khi gặp lỗi trong quá trình gọi API
+                Log.d("DEBUG", "FAIL" + t.getMessage());
+            }
+        });
     }
 
     private void checkBinsAndNotify(Bin bin) {
@@ -294,14 +309,21 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void updateUI(Bin bin) {
+
+    private void updateUI_fl(Bin bin) {
 //         Cập nhật các ProgressBar dựa trên dữ liệu bins
         if (bin != null) {
+
+
             metalWave.setProgress(bin.getMetal());
             plasticWave.setProgress(bin.getPlastic());
             paperWave.setProgress(bin.getPaper());
             otherWave.setProgress(bin.getOther());
 
         }
+    }
+
+    private void updateUI_NumTime(int num){
+        numtime.setText("Hôm nay bạn đã đổ rác " + num + " lần");
     }
 }

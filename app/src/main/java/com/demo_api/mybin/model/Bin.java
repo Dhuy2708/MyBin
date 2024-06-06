@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Bin implements Serializable {
+    @SerializedName("numtime")
+    private int numtime;
     @SerializedName("metal")
     private int metal;
 
@@ -16,6 +18,14 @@ public class Bin implements Serializable {
 
     @SerializedName("other")
     private int other;
+
+    public int getNumtime() {
+        return numtime;
+    }
+
+    public void setNumtime(int numtime) {
+        this.numtime = numtime;
+    }
 
     public Bin(int metal, int plastic, int paper, int other) {
         this.metal = metal;
