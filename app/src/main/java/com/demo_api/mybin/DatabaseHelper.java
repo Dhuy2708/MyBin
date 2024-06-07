@@ -151,6 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_EMAIL, user.getEmail());
         values.put(COLUMN_PHONENUMBER, user.getPhoneNumber());
         values.put(COLUMN_ADDRESS, user.getAddress());
+        values.put(COLUMN_PASSWORD, user.getPassword());
         // Password is not included here assuming it doesn't need to be updated from this method
 
         // updating row

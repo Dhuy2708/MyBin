@@ -23,6 +23,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private EditText etConfPassword;
+    private EditText etName;
     private EditText etPhone;
     private EditText etAddress;
     private Button btnRegister;
@@ -38,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         etConfPassword = findViewById(R.id.et_confpassword);
+        etName = findViewById(R.id.et_name);
         etPhone = findViewById(R.id.et_phone);
         etAddress = findViewById(R.id.et_address);
         btnRegister = findViewById(R.id.btn_register);
@@ -51,13 +53,14 @@ public class RegistrationActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        String confirmPassword = etPassword.getText().toString().trim();
+        String confirmPassword = etConfPassword.getText().toString().trim();
+        String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
         String address = etAddress.getText().toString().trim();
 
         if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
             if (password.equals(confirmPassword)) {
-                User user = new User(0, username, password, email, phone, address);
+                User user = new User(0, username, password, email, name, phone, address);
                 Log.d("DEBUG1", user.toString());
                 databaseHelper.addUser(user);
 

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.media.Image;
 import android.os.Build;
 
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -47,6 +49,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cjh.WaveProgressBarlibrary.WaveProgressBar;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -69,6 +72,7 @@ public class HomeFragment extends Fragment {
     private WaveProgressBar otherWave;
     private TextView numtime;
     private TextView nameHome;
+    private CircleImageView imageView;
     private TextView promptLogin1;
     private Button btnLogin1;
     private LinearLayout mainPage;
@@ -106,6 +110,7 @@ public class HomeFragment extends Fragment {
         btnLogin1 = view.findViewById(R.id.btn_login1);
         mainPage = view.findViewById(R.id.main_page);
         homePage = view.findViewById(R.id.scrollView2);
+        imageView = view.findViewById(R.id.imageView);
         loginScreen = view.findViewById(R.id.login_screen);
         trashHistory = view.findViewById(R.id.trash_history);
         databaseHelper = new DatabaseHelper(getContext());
@@ -145,7 +150,8 @@ public class HomeFragment extends Fragment {
         if (userId != -1) {
             User user = databaseHelper.getUser(userId);
             if (user != null) {
-                nameHome.setText(user.getUserName());
+                nameHome.setText(user.getName());
+                imageView.setImageResource(R.drawable.default_avatar);
                 promptLogin1.setVisibility(View.GONE);
                 btnLogin1.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);

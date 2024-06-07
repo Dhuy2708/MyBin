@@ -8,7 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.net.Uri;
+import android.Manifest;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,9 +33,12 @@ import com.demo_api.mybin.R;
 import com.demo_api.mybin.model.User;
 import com.demo_api.mybin.view.MainActivity;
 import com.demo_api.mybin.view.home.HomeFragment;
+import com.demo_api.mybin.view.user.EditPasswordActivity;
 import com.demo_api.mybin.view.user.EditProfileActivity;
 import com.demo_api.mybin.view.user.LoginActivity;
 import com.demo_api.mybin.DatabaseHelper;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -42,7 +47,8 @@ public class ProfileFragment extends Fragment {
     private Button btnLogin;
     private Button btnLogout;
     private Button btnUpdateProfile;
-    private ImageView profileImage;
+    private Button btnupdatePassword;
+    private CircleImageView profileImage;
     private ImageView phoneIcon;
     private ImageView locationIcon;
     private TextView profileUsername;
@@ -99,6 +105,7 @@ public class ProfileFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btn_login);
         btnLogout = view.findViewById(R.id.btn_logout);
         btnUpdateProfile = view.findViewById(R.id.btn_update_profile);
+        btnupdatePassword = view.findViewById(R.id.btn_pass);
         loginPage = view.findViewById(R.id.login_screen1);
         profilePage = view.findViewById(R.id.profile_page);
         databaseHelper = new DatabaseHelper(getContext());
@@ -124,20 +131,22 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
         btnUpdateProfile.setOnClickListener(v -> editUserProfile());
+        btnupdatePassword.setOnClickListener(v -> editPassword());
         profileImage.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(getActivity(),
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 openFileChooser();
             } else {
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
             }
         });
         return view;
     }
 
-    private void requestStoragePermission() {
-
+    private void editPassword() {
+        Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
+        startActivity(intent);
     }
 
     private void openFileChooser() {
@@ -249,5 +258,23 @@ public class ProfileFragment extends Fragment {
             Uri imageUri = data.getData();
             profileImage.setImageURI(imageUri);
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        OnBackPressedCallback callback = new OnBackPressedCallback(
+                true // default to enabled
+        ) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                this, // LifecycleOwner
+                callback
+        );
     }
 }
