@@ -51,7 +51,7 @@
             android:gravity="center_horizontal">
 
             <!-- Profile Picture -->
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -59,8 +59,9 @@
                 android:src="@drawable/user_1"
                 android:contentDescription="@string/profile_picture"
                 android:scaleType="centerCrop"
-                android:clipToOutline="true"
                 android:elevation="4dp"
+                app:civ_border_color="@color/dark_blue"
+                app:civ_border_width="3dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/user_1"
                 tools:srcCompat="@drawable/user_1" />
@@ -158,12 +159,22 @@
                         android:text="Chỉnh sửa thông tin" />
 
                     <Button
+                        android:id="@+id/btn_pass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Đổi mật khẩu" />
+
+                    <Button
                         android:id="@+id/btn_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="50dp"
                         android:layout_marginTop="10dp"
+                        android:visibility="gone"
                         android:text="Đăng xuất" />
                 </LinearLayout>
             </LinearLayout>

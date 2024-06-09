@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.model.User;
 import com.demo_api.mybin.DatabaseHelper;
+import com.demo_api.mybin.view.profile.ProfileFragment;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -62,7 +63,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String address = etAddress.getText().toString().trim();
 
         if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
-            Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Hãy điền hết các trường!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -75,10 +76,12 @@ public class EditProfileActivity extends AppCompatActivity {
         int rowsAffected = databaseHelper.updateUser(user);
 
         if (rowsAffected > 0) {
-            Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity
+            Toast.makeText(this, "Chỉnh sửa thành công!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getBaseContext(), ProfileFragment.class);
+            startActivity(intent);
+//            finish(); // Close the activity
         } else {
-            Toast.makeText(this, "Error updating profile", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Đã có lỗi xảy ra.", Toast.LENGTH_SHORT).show();
         }
     }
 }

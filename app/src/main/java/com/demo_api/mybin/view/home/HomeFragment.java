@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.media.Image;
 import android.os.Build;
 
 import android.os.Bundle;
@@ -36,7 +37,6 @@ import com.demo_api.mybin.R;
 import com.demo_api.mybin.api.service.BinApiService;
 import com.demo_api.mybin.model.Bin;
 import com.demo_api.mybin.DatabaseHelper;
-import com.demo_api.mybin.model.BinHistory;
 import com.demo_api.mybin.model.User;
 import com.demo_api.mybin.view.MainActivity;
 import com.demo_api.mybin.view.history.HistoryFragment;
@@ -49,6 +49,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import cjh.WaveProgressBarlibrary.WaveProgressBar;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -64,7 +65,6 @@ import retrofit2.Response;
  */
 public class HomeFragment extends Fragment {
     private static final String CHANNEL_ID = "BinFullNotificationChannel";
-    private static int static_numtime = 0;
     private static Bin static_bin;
     private WaveProgressBar metalWave;
     private WaveProgressBar plasticWave;
@@ -72,9 +72,9 @@ public class HomeFragment extends Fragment {
     private WaveProgressBar otherWave;
     private TextView numtime;
     private TextView nameHome;
+    private CircleImageView imageView;
     private TextView promptLogin1;
     private Button btnLogin1;
-    private ImageView statisticArrow;
     private LinearLayout mainPage;
     private RelativeLayout loginScreen;
     private ScrollView homePage;
@@ -108,13 +108,12 @@ public class HomeFragment extends Fragment {
         nameHome = view.findViewById(R.id.name_home);
         promptLogin1 = view.findViewById(R.id.prompt_login1);
         btnLogin1 = view.findViewById(R.id.btn_login1);
-        statisticArrow = view.findViewById(R.id.statisticArrow);
         mainPage = view.findViewById(R.id.main_page);
         homePage = view.findViewById(R.id.scrollView2);
+        imageView = view.findViewById(R.id.imageView);
         loginScreen = view.findViewById(R.id.login_screen);
         trashHistory = view.findViewById(R.id.trash_history);
         databaseHelper = new DatabaseHelper(getContext());
-
         if (isLoggedIn()) {
             loadUserProfile();
         } else {
@@ -131,14 +130,6 @@ public class HomeFragment extends Fragment {
 //        trashHistory.setOnClickListener(v -> {
 //            Navigation.findNavController(v).navigate(R.id.historyFragment);
 //        });
-
-        statisticArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.statisticFragment);
-            }
-        });
-
         return view;
 
     }
@@ -160,6 +151,7 @@ public class HomeFragment extends Fragment {
             User user = databaseHelper.getUser(userId);
             if (user != null) {
                 nameHome.setText(user.getName());
+                imageView.setImageResource(R.drawable.default_avatar);
                 promptLogin1.setVisibility(View.GONE);
                 btnLogin1.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
@@ -188,9 +180,6 @@ public class HomeFragment extends Fragment {
         int year = calendar.get(Calendar.YEAR);
 
         // Gọi API với ngày hiện tại
-
-
-        updateUI_NumTime(static_numtime);
         updateUI_fl(static_bin);
 
         //Handle navigation khi ấn nút lịch sử rác
@@ -241,13 +230,12 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful()) {
                     Bin bin = response.body();
 
-                    static_numtime = bin.getNumtime();
                     // Xử lý khi nhận được dữ liệu từ API thành công
 
                     Log.d("SUCCESSS", "NumTime: " + bin.getNumtime());
 
                     // Thực hiện cập nhật giao diện hoặc xử lý khác với dữ liệu từ API
-                    updateUI_NumTime(static_numtime);
+                    updateUI_NumTime(bin.getNumtime());
                 } else {
                     Log.d("DEBUG", "Numtime call not successful");
                 }
