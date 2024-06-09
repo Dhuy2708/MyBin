@@ -1,6 +1,7 @@
 package com.demo_api.mybin.view.home;
 
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,14 +14,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -30,8 +36,10 @@ import com.demo_api.mybin.R;
 import com.demo_api.mybin.api.service.BinApiService;
 import com.demo_api.mybin.model.Bin;
 import com.demo_api.mybin.DatabaseHelper;
+import com.demo_api.mybin.model.BinHistory;
 import com.demo_api.mybin.model.User;
 import com.demo_api.mybin.view.MainActivity;
+import com.demo_api.mybin.view.history.HistoryFragment;
 import com.demo_api.mybin.view.user.LoginActivity;
 import com.demo_api.mybin.view.user.RegistrationActivity;
 
@@ -66,9 +74,11 @@ public class HomeFragment extends Fragment {
     private TextView nameHome;
     private TextView promptLogin1;
     private Button btnLogin1;
+    private ImageView statisticArrow;
     private LinearLayout mainPage;
     private RelativeLayout loginScreen;
     private ScrollView homePage;
+    private ConstraintLayout trashHistory;
     private DatabaseHelper databaseHelper;
     private Disposable disposable;
     private BinApiService binApiService;
@@ -98,10 +108,13 @@ public class HomeFragment extends Fragment {
         nameHome = view.findViewById(R.id.name_home);
         promptLogin1 = view.findViewById(R.id.prompt_login1);
         btnLogin1 = view.findViewById(R.id.btn_login1);
+        statisticArrow = view.findViewById(R.id.statisticArrow);
         mainPage = view.findViewById(R.id.main_page);
         homePage = view.findViewById(R.id.scrollView2);
         loginScreen = view.findViewById(R.id.login_screen);
+        trashHistory = view.findViewById(R.id.trash_history);
         databaseHelper = new DatabaseHelper(getContext());
+
         if (isLoggedIn()) {
             loadUserProfile();
         } else {
@@ -115,6 +128,17 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         });
+//        trashHistory.setOnClickListener(v -> {
+//            Navigation.findNavController(v).navigate(R.id.historyFragment);
+//        });
+
+        statisticArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.statisticFragment);
+            }
+        });
+
         return view;
 
     }
@@ -135,7 +159,7 @@ public class HomeFragment extends Fragment {
         if (userId != -1) {
             User user = databaseHelper.getUser(userId);
             if (user != null) {
-                nameHome.setText(user.getUserName());
+                nameHome.setText(user.getName());
                 promptLogin1.setVisibility(View.GONE);
                 btnLogin1.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
@@ -165,8 +189,19 @@ public class HomeFragment extends Fragment {
 
         // Gọi API với ngày hiện tại
 
+
         updateUI_NumTime(static_numtime);
         updateUI_fl(static_bin);
+
+        //Handle navigation khi ấn nút lịch sử rác
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.homeFragment, false)
+                .build();
+
+        trashHistory.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.historyFragment, null, navOptions);
+        });
+
         // Khởi tạo đối tượng BinApiService
         binApiService = new BinApiService();
 
@@ -225,6 +260,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     private void checkBinsAndNotify(Bin bin) {
         if (bin.getMetal() >= 100 && !isMetalNotified) {
             sendNotification("Thùng kim loại đã đầy, hãy đi đổ");

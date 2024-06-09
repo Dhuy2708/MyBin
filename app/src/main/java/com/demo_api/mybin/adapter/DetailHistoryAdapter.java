@@ -13,6 +13,7 @@ import com.demo_api.mybin.databinding.DayHistoryItemBinding;
 import com.demo_api.mybin.databinding.DetailHistoryItemBinding;
 import com.demo_api.mybin.model.BinDetailHistory;
 import com.demo_api.mybin.model.BinHistory;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class DetailHistoryAdapter extends RecyclerView.Adapter<DetailHistoryAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemBinding.setItem(list.get(position));
+        Picasso.get().load(list.get(position).getImg()).into(holder.itemBinding.binImg);
     }
 
     @Override

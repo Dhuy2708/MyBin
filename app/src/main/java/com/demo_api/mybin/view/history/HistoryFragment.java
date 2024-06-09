@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.demo_api.mybin.DatabaseHelper;
 import com.demo_api.mybin.R;
 import com.demo_api.mybin.adapter.HistoryPagerAdapter;
 import com.demo_api.mybin.model.User;
+import com.demo_api.mybin.view.MainActivity;
 import com.demo_api.mybin.view.user.LoginActivity;
 import com.google.android.material.tabs.TabLayout;
 
@@ -142,5 +145,22 @@ public class HistoryFragment extends Fragment {
                 Objects.requireNonNull(tabLayout.getTabAt(position)).select();
             }
         });
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        OnBackPressedCallback callback = new OnBackPressedCallback(
+                true // default to enabled
+        ) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                this, // LifecycleOwner
+                callback
+        );
     }
 }

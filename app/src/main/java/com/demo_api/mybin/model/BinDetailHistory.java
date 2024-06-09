@@ -13,6 +13,16 @@ public class BinDetailHistory implements Serializable {
     private String name;
     @SerializedName("accuracy")
     private String accuracy;
+    @SerializedName("img")
+    private String img;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getTime() {
         return time;

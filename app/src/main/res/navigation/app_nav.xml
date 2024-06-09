@@ -23,6 +23,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_statisticFragment"
+            app:destination="@id/statisticFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -61,6 +64,15 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settingFragment2_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.demo_api.mybin.view.statistic.StatisticFragment"
+        android:label="fragment_statistic"
+        tools:layout="@layout/fragment_statistic" >
+        <action
+            android:id="@+id/action_statisticFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
