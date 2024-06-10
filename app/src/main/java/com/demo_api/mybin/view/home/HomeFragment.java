@@ -37,6 +37,7 @@ import com.demo_api.mybin.R;
 import com.demo_api.mybin.api.service.BinApiService;
 import com.demo_api.mybin.model.Bin;
 import com.demo_api.mybin.DatabaseHelper;
+import com.demo_api.mybin.model.BinHistory;
 import com.demo_api.mybin.model.User;
 import com.demo_api.mybin.view.MainActivity;
 import com.demo_api.mybin.view.history.HistoryFragment;
@@ -66,10 +67,13 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
     private static final String CHANNEL_ID = "BinFullNotificationChannel";
     private static Bin static_bin;
+    private static int static_numtime;
     private WaveProgressBar metalWave;
     private WaveProgressBar plasticWave;
     private WaveProgressBar paperWave;
     private WaveProgressBar otherWave;
+
+    private ConstraintLayout statisticLayout;
     private TextView numtime;
     private TextView nameHome;
     private CircleImageView imageView;
@@ -110,6 +114,7 @@ public class HomeFragment extends Fragment {
         btnLogin1 = view.findViewById(R.id.btn_login1);
         mainPage = view.findViewById(R.id.main_page);
         homePage = view.findViewById(R.id.scrollView2);
+        statisticLayout = view.findViewById(R.id.statisticLayout);
         imageView = view.findViewById(R.id.imageView);
         loginScreen = view.findViewById(R.id.login_screen);
         trashHistory = view.findViewById(R.id.trash_history);
@@ -181,6 +186,7 @@ public class HomeFragment extends Fragment {
 
         // Gọi API với ngày hiện tại
         updateUI_fl(static_bin);
+        updateUI_NumTime(static_numtime);
 
         //Handle navigation khi ấn nút lịch sử rác
         NavOptions navOptions = new NavOptions.Builder()
@@ -189,6 +195,10 @@ public class HomeFragment extends Fragment {
 
         trashHistory.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.historyFragment, null, navOptions);
+        });
+
+        statisticLayout.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.statisticFragment);
         });
 
         // Khởi tạo đối tượng BinApiService
@@ -229,7 +239,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<Bin> call, Response<Bin> response) {
                 if (response.isSuccessful()) {
                     Bin bin = response.body();
-
+                    static_numtime = bin.getNumtime();
                     // Xử lý khi nhận được dữ liệu từ API thành công
 
                     Log.d("SUCCESSS", "NumTime: " + bin.getNumtime());
