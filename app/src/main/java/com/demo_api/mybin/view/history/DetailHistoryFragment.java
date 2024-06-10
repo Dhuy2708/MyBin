@@ -1,5 +1,6 @@
 package com.demo_api.mybin.view.history;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -75,7 +76,7 @@ public class DetailHistoryFragment extends Fragment {
         });
 
         history_list = new ArrayList<BinDetailHistory>();
-        historyAdapter = new DetailHistoryAdapter(history_list);
+        historyAdapter = new DetailHistoryAdapter(getContext(), history_list);
 
         recyclerView = view.findViewById(R.id.detailHistoryList);
         recyclerView.setAdapter(historyAdapter);
@@ -104,5 +105,21 @@ public class DetailHistoryFragment extends Fragment {
                         Log.d("DEBUG", "FAIL" + e.getMessage());
                     }
                 });
+
+        historyAdapter.setOnItemClickListener(binDetailHistory -> {
+            String dateText = dateTV.getText().toString();
+
+            // Create an Intent to open the edit activity
+            Intent intent = new Intent(getContext(), EditBinDetailHistoryActivity.class);
+
+            // Pass the selected item's data to the new activity
+            intent.putExtra("HISTORY_NAME", binDetailHistory.getName());
+            intent.putExtra("HISTORY_TIME", "Thời điểm: " + dateText + " " + binDetailHistory.getTime());
+            intent.putExtra("HISTORY_ACCURACY", "Độ chính xác: " + binDetailHistory.getAccuracy() + "%");
+//            intent.putExtra("DATE_TEXT", dateText);
+
+            // Start the new activity
+            startActivity(intent);
+        });
     }
 }

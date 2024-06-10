@@ -14,6 +14,15 @@ public class BinDetailHistory implements Serializable {
     @SerializedName("accuracy")
     private String accuracy;
 
+    public BinDetailHistory() {
+    }
+
+    public BinDetailHistory(String time, String name, String accuracy) {
+        this.time = time;
+        this.name = name;
+        this.accuracy = accuracy;
+    }
+
     public String getTime() {
         return time;
     }

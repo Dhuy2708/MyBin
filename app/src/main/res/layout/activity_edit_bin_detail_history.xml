@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.history.EditBinDetailHistoryActivity">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Chỉnh sửa thông tin"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_margin="16dp" />
+    <TextView
+        android:id="@+id/editTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Time"
+        android:layout_below="@id/title"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:id="@+id/editAccuracy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Accuracy"
+        android:layout_below="@id/editTime"
+        android:layout_margin="16dp" />
+
+    <LinearLayout
+        android:id="@+id/nameRadio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_below="@id/editAccuracy">
+
+        <TextView
+            android:id="@+id/editName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Chất liệu"
+            android:layout_margin="16dp">
+        </TextView>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_toRightOf="@id/editName"
+            android:layout_centerInParent="true">
+
+            <RadioButton
+                android:id="@+id/radioPlastic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plastic" />
+
+            <RadioButton
+                android:id="@+id/radioMetal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Metal" />
+
+            <RadioButton
+                android:id="@+id/radioPaper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paper" />
+
+            <RadioButton
+                android:id="@+id/radioOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lưu"
+        android:layout_below="@id/nameRadio"
+        android:layout_margin="16dp"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
