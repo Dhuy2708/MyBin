@@ -49,7 +49,6 @@ public class DetailHistoryAdapter extends RecyclerView.Adapter<DetailHistoryAdap
         TextView title = (TextView) view1.findViewById(R.id.dateTextView);
 
         DetailHistoryItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.detail_history_item, parent, false);
-
         return new DetailHistoryAdapter.ViewHolder(binding);
     }
 
@@ -70,6 +69,7 @@ public class DetailHistoryAdapter extends RecyclerView.Adapter<DetailHistoryAdap
 
         public ViewHolder(DetailHistoryItemBinding itemBinding) {
             super(itemBinding.getRoot());
+
             this.itemBinding = itemBinding;
             this.title = title;
         }
