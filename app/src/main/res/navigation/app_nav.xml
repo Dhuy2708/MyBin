@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_homeFragment_to_statisticFragment"
             app:destination="@id/statisticFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_managementFragment"
+            app:destination="@id/managementFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -73,6 +76,15 @@
         tools:layout="@layout/fragment_statistic" >
         <action
             android:id="@+id/action_statisticFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/managementFragment"
+        android:name="com.demo_api.mybin.view.history.BinManagementFragment"
+        android:label="fragment_manage_bin"
+        tools:layout="@layout/fragment_manage_bin" >
+        <action
+            android:id="@+id/action_managementFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

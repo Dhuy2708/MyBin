@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
     private RelativeLayout loginScreen;
     private ScrollView homePage;
     private ConstraintLayout trashHistory;
+    private ConstraintLayout trashManagement;
     private DatabaseHelper databaseHelper;
     private Disposable disposable;
     private BinApiService binApiService;
@@ -118,6 +119,7 @@ public class HomeFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         loginScreen = view.findViewById(R.id.login_screen);
         trashHistory = view.findViewById(R.id.trash_history);
+        trashManagement = view.findViewById(R.id.trash_management);
         databaseHelper = new DatabaseHelper(getContext());
         if (isLoggedIn()) {
             loadUserProfile();
@@ -195,6 +197,9 @@ public class HomeFragment extends Fragment {
 
         trashHistory.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.historyFragment, null, navOptions);
+        });
+        trashManagement.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.managementFragment, null, navOptions);
         });
 
         statisticLayout.setOnClickListener(v -> {
